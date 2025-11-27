@@ -71,9 +71,19 @@ def getPortefeuille():
     headers["Referer"] = f"https://abcbourse.com/portif/displayp?n={portifID}"
     response = requests.get(f"https://abcbourse.com/api/portfolio/GetPortifFull?portifID={portifID}", headers=headers)
     if response.status_code == 200:
-        print("Request successful:", response.json())
         return response.json()
     print("Request failed with status code:", response.status_code)
+    return {}
+
+def getCompany(search):
+    companies = getAllCompanies()
+    for c in companies:
+        ok = True
+        for k in search.keys():
+            if c[k] != search[k]:
+                ok = False
+        if ok:
+            return c
     return {}
 
 def getCompaniesList(compartiment : str, letter : str):
@@ -106,4 +116,5 @@ if __name__ == "__main__":
     getInfo()
     getPortefeuille()
     print(getAllCompanies())
+    print(getCompany({'id':'VANTIp'}))
     
